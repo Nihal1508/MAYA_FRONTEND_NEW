@@ -2,7 +2,7 @@ import React from 'react'
 
 function InviteAdminCard() {
     return (
-        <div className="bg-[#0B0B0B] p-10 mt-6 rounded-2xl text-left">
+        <div className="bg-[#0B0B0B] p-10 mt-6 rounded-2xl text-left hidden">
             <h3 className="text-xl font-medium">Invite admin</h3>
             <input
                 type="email"

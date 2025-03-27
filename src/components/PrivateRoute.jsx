@@ -7,8 +7,8 @@ function PrivateRoute() {
     console.log("hello")
     const checkAuth = () => {
         // Check if the user is authenticated
-        const accesstoken = localStorage.getItem("accessToken")
-        const refreshToken = localStorage.getItem("refreshToken")
+        const accesstoken = localStorage.getItem("access_token")
+        const refreshToken = localStorage.getItem("refresh_token")
         console.log(accesstoken + refreshToken)
         if (accesstoken && refreshToken) {
             return true

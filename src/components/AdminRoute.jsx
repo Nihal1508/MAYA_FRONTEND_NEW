@@ -16,9 +16,8 @@ function AdminRoute() {
     }
 
     return (
-        <Layout>
+    
             <Outlet />
-        </Layout>
     );
 }
 

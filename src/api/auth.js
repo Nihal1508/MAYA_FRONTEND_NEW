@@ -7,7 +7,7 @@ export const signIn = async (credentials, { onSuccess, onError } = {}) => {
         const response = await publicGateway.post(maya.login, credentials, {
             withCredentials: true,
         });
-
+        
         // Axios already parses the response data
         const responseData = response.data;
         if (onSuccess) {
@@ -16,7 +16,10 @@ export const signIn = async (credentials, { onSuccess, onError } = {}) => {
         if (responseData.role === 'admin') {
             localStorage.setItem("role", responseData.role)
         }
+        localStorage.setItem("access_token", responseData.accessToken);
+        localStorage.setItem("refresh_token", responseData.refreshToken);
         return responseData;
+        
     } catch (error) {
         // Axios wraps the response in error.response
         const errorData = error.response?.data || {};

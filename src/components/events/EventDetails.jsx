@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import { getEvent } from "../../api/events";
+import { getEvent } from "../../api/events1";
 import Topbar from "../topbar";
 
 function EventDetails() {

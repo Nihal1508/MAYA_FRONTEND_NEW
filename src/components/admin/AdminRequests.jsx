@@ -1,56 +1,67 @@
-import React, { useState, useEffect } from 'react'
-import { MdKeyboardDoubleArrowDown } from 'react-icons/md'
-import AdminRequestsListItem from '../dashboard/AdminRequestsListItem'
-import { allAdmins } from '../../api/user'
+import React, { useState, useEffect } from 'react';
+import { MdKeyboardDoubleArrowDown } from 'react-icons/md';
+import AdminRequestsListItem from '../dashboard/AdminRequestsListItem';
+import { allAdmins } from '../../api/user';
 
 function AdminRequests() {
-    const [requests, setRequests] = useState([])
-    const [loading, setLoading] = useState(true)
-    const [error, setError] = useState(null)
-
-    // Fetch initial admin requests
+    const [requests, setRequests] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
+    const [page, setPage] = useState(1);
+    
     useEffect(() => {
-        const fetchInitialRequests = async () => {
-            try {
-                const response = await allAdmins({
-                    status: 'pending', // or your desired initial status
-                    email: '' // can specify email or leave empty
-                })
-                setRequests(response.data || [])
-            } catch (err) {
-                console.error("Error loading admin requests:", err)
-                setError("Failed to load admin requests")
-            } finally {
-                setLoading(false)
-            }
+        const token = localStorage.getItem('access_token');
+        console.log('Current token:', token);
+        
+        if (!token) {
+            console.error('No access token found!');
+            // Handle redirect to login here if needed
+            return;
         }
+        fetchAdminRequests();
+    }, []);
 
-        fetchInitialRequests()
-    }, [])
-
-    const handleViewMore = async () => {
-        setLoading(true)
+    const fetchAdminRequests = async (isLoadMore = false) => {
+        setLoading(true);
+        setError(null);
+        
         try {
-            const response = await allAdmins({
-                status: 'pending', // same as initial or different
-                email: '' 
-            })
-            setRequests(prev => [...prev, ...(response.data || [])])
-        } catch (err) {
-            console.error("Error loading more requests:", err)
-            setError("Failed to load more requests")
+            const token = localStorage.getItem('access_token');
+            if (!token) {
+                throw new Error('No authentication token found');
+            }
+    
+            const response = await allAdmins({ status: 'pending', email: '' });
+    
+            console.log("API Response:", response); // Debugging log
+    
+            // Ensure response is an object and extract admins array
+            const adminRequests = Array.isArray(response) ? response 
+                               : Array.isArray(response.admins) ? response.admins 
+                               : null;
+    
+            if (!adminRequests) {
+                throw new Error("Invalid response format");
+            }
+    
+            setRequests(prev => isLoadMore ? [...prev, ...adminRequests] : adminRequests);
+            setPage(prev => prev + 1);
+    
+        } catch (error) {
+            console.error("Error fetching admin requests:", error.message);
+            setError(error.message);
         } finally {
-            setLoading(false)
+            setLoading(false);
         }
-    }
-
+    };
+ 
     if (loading && requests.length === 0) {
         return (
             <div className="bg-[#0B0B0B] px-10 pt-10 pb-4 mt-6 rounded-2xl text-left">
                 <h3 className="text-xl font-medium mb-5">Admin Requests</h3>
                 <p className="text-gray-400">Loading...</p>
             </div>
-        )
+        );
     }
 
     if (error) {
@@ -59,7 +70,7 @@ function AdminRequests() {
                 <h3 className="text-xl font-medium mb-5">Admin Requests</h3>
                 <p className="text-red-400">{error}</p>
             </div>
-        )
+        );
     }
 
     return (
@@ -74,7 +85,7 @@ function AdminRequests() {
                     
                     <div className="flex justify-center">
                         <button 
-                            onClick={handleViewMore}
+                            onClick={() => fetchAdminRequests(true)}
                             disabled={loading}
                             className={`text-gray-400 text-sm mt-2 items-center px-10 py-2 flex cursor-pointer ${
                                 loading ? 'opacity-50' : ''
@@ -89,7 +100,7 @@ function AdminRequests() {
                 <p className="text-gray-400">No admin requests found</p>
             )}
         </div>
-    )
+    );
 }
 
-export default AdminRequests
+export default AdminRequests;

@@ -20,5 +20,7 @@ export const maya = {
     rejectRequest: '/api/users/reject',
     //admins
     requests: '/admin/users',
+    //invites
+    invite:'/admin/events/invite',
 
 }

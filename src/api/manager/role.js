@@ -2,7 +2,7 @@ import { publicGateway } from "../../../services/gateway";
 import { maya } from "../../../services/urls";
 
 export const checkRole = async ({ onSuccess, onError } = {}) => {
-    const accessToken = localStorage.getItem("accessToken")
+    const accessToken = localStorage.getItem("access_token")
     try {
         const response = await publicGateway.get(maya.checkRole, {
             headers: {
