@@ -8,6 +8,7 @@ import slackIcon from '../assets/images/slack.png';
 
 const Sidebar = () => {
   const role = localStorage.getItem("role");
+  console.log(role)
   const navItemsAdmin = [
     { path: "/", icon: homeIcon, label: "Dashboard" },
     { path: "/events", icon: layersIcon, label: "Manage Events" },

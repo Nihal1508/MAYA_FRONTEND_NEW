@@ -1,3 +1,4 @@
+import { toast } from "react-toastify";
 import { publicGateway } from "../../services/gateway"
 import { maya } from "../../services/urls"
 
@@ -10,6 +11,7 @@ export const signIn = async (credentials, { onSuccess, onError } = {}) => {
         
         // Axios already parses the response data
         const responseData = response.data;
+        toast.info(responseData)
         if (onSuccess) {
             onSuccess(responseData);
         }
@@ -90,7 +92,7 @@ export const verifyOtp = async ({ email, otp }, { onSuccess, onError } = {}) => 
 export const signUp = async ({ email, password }, { onSuccess, onError } = {}) => {
     try {
         const response = await publicGateway.post(maya.signup, { email, password });
-        
+
         if (onSuccess) onSuccess(response.data);
         return response.data;
 
