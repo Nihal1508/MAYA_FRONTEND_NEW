@@ -12,23 +12,27 @@ export const publicGateway = axios.create({
 
 publicGateway.interceptors.request.use(
   (config) => {
-      console.log('Request sent:', config.url);
-      return config;
+    console.log('Request sent:', config.url);
+    const accessToken = localStorage.getItem('accessToken');
+    if (accessToken) {
+      config.headers['Authorization'] = `Bearer ${accessToken}`;
+    }
+    return config;
   },
   (error) => {
-      console.error('Request error:', error);
-      return Promise.reject(error);
+    console.error('Request error:', error);
+    return Promise.reject(error);
   }
 );
 
 publicGateway.interceptors.response.use(
   (response) => {
-      console.log('Response received:', response.config.url);
-      return response;
+    console.log('Response received:', response.config.url);
+    return response;
   },
   (error) => {
-      console.error('Response error:', error.response?.data);
-      return Promise.reject(error);
+    console.error('Response error:', error.response?.data);
+    return Promise.reject(error);
   }
 );
 export const privateGateway = axios.create({
@@ -40,7 +44,7 @@ export const privateGateway = axios.create({
 
 privateGateway.interceptors.request.use(
   function (config) {
-    const accessToken = localStorage.getItem('access_token');
+    const accessToken = localStorage.getItem('accessToken');
     if (accessToken) {
       config.headers['Authorization'] = `Bearer ${accessToken}`;
     }
@@ -59,7 +63,7 @@ privateGateway.interceptors.response.use(
     if (error.response.status === 401) {
       try {
         const response = await publicGateway.post(maya.refresh, {
-            refreshToken: localStorage.getItem('refresh_token'),
+          refreshToken: localStorage.getItem('refresh_token'),
         });
         localStorage.setItem('access_token', response.data.accessToken);
         const { config } = error;

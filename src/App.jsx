@@ -15,9 +15,10 @@ import EventImages from "./components/storage/StoredImage";
 import EventDetails from "./components/events/EventDetails";
 import WaitingAdminResponse from "./pages/manager/WaitingAdminResponse";
 import AdminRoute from "./components/AdminRoute";
+import ManagerDashboard from "./pages/manager/ManagerDashboard";
 
 function App() {
-
+  console.log(new Date().toISOString());
   return (
     <Routes>
       <Route path="/login" element={<Login />} />
@@ -25,13 +26,14 @@ function App() {
       <Route path="/waiting" element={<WaitingAdminResponse />} />
       <Route element={<PrivateRoute />}>
         <Route path="/storage" element={<Storage />} />
+        <Route path="/managerdashboard" element={<ManagerDashboard />} />
         <Route path="/events" element={<Events />} />
         <Route path="/event/:id" element={<EventDetails />} />
-        <Route path="/" element={<Dashboard />} />
         <Route path="/storageplus" element={<Storageplus />} />
         <Route path="/manageevent" element={<ManageEvent />} />
         <Route path="/storage/:id" element={<EventImages />} />
         <Route element={<AdminRoute />}>
+          <Route path="/" element={<Dashboard />} />
           <Route path="/addevent" element={<Addevent />} />
           <Route path="/manageadmins" element={<Manageadmins />} />
         </Route>

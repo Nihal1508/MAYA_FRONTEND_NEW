@@ -12,12 +12,11 @@ function AdminRoute() {
         return false
     }
     if (!checkAdmin()) {
-        return <Navigate to="/" replace />
+        return <Navigate to="/managerdashboard" replace />
     }
 
     return (
-    
-            <Outlet />
+        <Outlet />
     );
 }
 
