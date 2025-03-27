@@ -11,14 +11,16 @@ export default function Signup() {
         <img src={mayaLogo} alt="Maya Logo" className="w-48 h-auto" />
         <p className="text-lg text-gray-300 mt-2">Turn Moments into Memories</p>
       </div>
-      {/* Main Content: Image and MultiStepSignup Form */}
+      {/* Main Content: Image and Signup Form */}
       <div className="flex relative w-full flex-row items-start justify-start">
-        {/* Left Section: Swirl Image */}
+        {/* Left Section: Image */}
         <div className="">
           <img src={swirl2} alt="Swirl" className="w-9/12 -mt-4 ml-28" />
         </div>
-        {/* Right Section: Multi-Step Signup Form */}
-        <MultiStepSignup />
+        {/* Right Section: Signup Form */}
+        <div className="absolute inset-x-0 flex items-center justify-center">
+          <MultiStepSignup />
+        </div>
       </div>
     </div>
   );

@@ -6,19 +6,19 @@ export const maya = {
     signup: '/auth/signup',
     refresh: '/tokens/refresh',
     //events
-    createEvent:'/api/events',
-    getEvent:'/admin/events',
-    getEventImage:'/api/events/upload',
-    ManagerInvite:'/admin/events/invite',
+    createEvent: '/api/events',
+    getEvent: '/admin/events',
+    getEventImage: '/api/events/upload',
+    ManagerInvite: '/admin/events/invite',
     //image
-    takeImage:'/api/events/images',
-    deleteImage:'/api/events/images',
-    uploadImage:'/api/events/upload',
+    takeImage: '/api/events/images',
+    deleteImage: '/api/events/images',
+    uploadImage: '/api/events/upload',
     //users
-
-    acceptRequest:'/api/users/accept',
-    rejectRequest:'/api/users/reject',
+    checkRole: '/api/role',
+    acceptRequest: '/api/users/accept',
+    rejectRequest: '/api/users/reject',
     //admins
-    requests:'/admin/users',
+    requests: '/admin/users',
 
 }

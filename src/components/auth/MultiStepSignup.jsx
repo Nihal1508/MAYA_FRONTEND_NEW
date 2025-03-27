@@ -1,14 +1,20 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import { generateOtp, signUp, verifyOtp } from "../../api/auth";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function MultiStepSignup() {
   const navigate = useNavigate();
   const [step, setStep] = useState(1);
   const [email, setEmail] = useState("");
   const [otpError, setOtpError] = useState("");
+  const [loading, setLoading] = useState({
+    generateOtp: false,
+    verifyOtp: false,
+    signUp: false
+  });
 
   // ----- Step 1: Request OTP (Email Input) ----- //
   const {
@@ -17,20 +23,23 @@ function MultiStepSignup() {
     formState: { errors: emailErrors },
   } = useForm({ mode: "onBlur" });
 
-  const generateOtpMutation = useMutation({
-    mutationFn: generateOtp,
-    onSuccess: (_, variables) => {
-      setEmail(variables.email);
-      setStep(2);
-    },
-    onError: (error) => {
-      console.error("Error sending OTP:", error);
-      setOtpError("Failed to send OTP. Please try again.");
-    },
-  });
-
-  const onSubmitEmail = (data) => {
-    generateOtpMutation.mutate({ email: data.email });
+  const onSubmitEmail = async (data) => {
+    setLoading(prev => ({ ...prev, generateOtp: true }));
+    try {
+      await generateOtp({ email: data.email }, {
+        onSuccess: () => {
+          setEmail(data.email);
+          setStep(2);
+          toast.success("OTP sent successfully!");
+        },
+        onError: (error) => {
+          setOtpError(error.message || "Failed to send OTP. Please try again.");
+          toast.error(error.message);
+        }
+      });
+    } finally {
+      setLoading(prev => ({ ...prev, generateOtp: false }));
+    }
   };
 
   // ----- Step 2: Verify OTP ----- //
@@ -40,20 +49,23 @@ function MultiStepSignup() {
     formState: { errors: otpErrors },
   } = useForm({ mode: "onBlur" });
 
-  const verifyOtpMutation = useMutation({
-    mutationFn: verifyOtp,
-    onSuccess: () => {
-      setStep(3);
-      setOtpError("");
-    },
-    onError: (error) => {
-      console.error("OTP verification error:", error);
-      setOtpError(error.response?.data?.message || "Invalid OTP. Please try again.");
-    },
-  });
-
-  const onSubmitOtp = (data) => {
-    verifyOtpMutation.mutate({ email, otp: data.otp });
+  const onSubmitOtp = async (data) => {
+    setLoading(prev => ({ ...prev, verifyOtp: true }));
+    try {
+      await verifyOtp({ email, otp: data.otp }, {
+        onSuccess: () => {
+          setStep(3);
+          setOtpError("");
+          toast.success("OTP verified successfully!");
+        },
+        onError: (error) => {
+          setOtpError(error.message || "Invalid OTP. Please try again.");
+          toast.error(error.message);
+        }
+      });
+    } finally {
+      setLoading(prev => ({ ...prev, verifyOtp: false }));
+    }
   };
 
   // ----- Step 3: Complete Signup (Password Input) ----- //
@@ -63,22 +75,24 @@ function MultiStepSignup() {
     formState: { errors: signupErrors },
   } = useForm({ mode: "onBlur" });
 
-  const signUpMutation = useMutation({
-    mutationFn: signUp,
-    onSuccess: (data) => {
-      const { message, accessToken, refreshToken } = data;
-      localStorage.setItem("accessToken", accessToken);
-      localStorage.setItem("refreshToken", refreshToken);
-      console.log(message);
-      navigate("/dashboard");
-    },
-    onError: (error) => {
-      console.error("Signup error:", error);
-    },
-  });
-
-  const onSubmitSignup = (data) => {
-    signUpMutation.mutate({ email, password: data.password });
+  const onSubmitSignup = async (data) => {
+    setLoading(prev => ({ ...prev, signUp: true }));
+    try {
+      await signUp({ email, password: data.password }, {
+        onSuccess: (response) => {
+          const { accessToken, refreshToken } = response;
+          localStorage.setItem("accessToken", accessToken);
+          localStorage.setItem("refreshToken", refreshToken);
+          toast.success("Signup successful!");
+          navigate("/waiting");
+        },
+        onError: (error) => {
+          toast.error(error.message || "Signup failed. Please try again.");
+        }
+      });
+    } finally {
+      setLoading(prev => ({ ...prev, signUp: false }));
+    }
   };
 
   return (
@@ -104,9 +118,9 @@ function MultiStepSignup() {
           <button
             type="submit"
             className="w-full py-3 bg-white text-black font-bold rounded hover:bg-gray-200"
-            disabled={generateOtpMutation.isLoading}
+            disabled={loading.generateOtp}
           >
-            {generateOtpMutation.isLoading ? "Sending OTP..." : "Send OTP"}
+            {loading.generateOtp ? "Sending OTP..." : "Send OTP"}
           </button>
         </form>
       )}
@@ -119,7 +133,7 @@ function MultiStepSignup() {
             type="text"
             placeholder="OTP"
             className="w-full p-3 rounded mb-4 bg-[#00000010] border text-white"
-            {...registerOtp("otp", { 
+            {...registerOtp("otp", {
               required: "OTP is required",
               pattern: {
                 value: /^\d{6}$/,
@@ -136,15 +150,15 @@ function MultiStepSignup() {
           <button
             type="submit"
             className="w-full py-3 bg-white text-black font-bold rounded hover:bg-gray-200"
-            disabled={verifyOtpMutation.isLoading}
+            disabled={loading.verifyOtp}
           >
-            {verifyOtpMutation.isLoading ? "Verifying OTP..." : "Verify OTP"}
+            {loading.verifyOtp ? "Verifying OTP..." : "Verify OTP"}
           </button>
           <button
             type="button"
-            onClick={() => generateOtpMutation.mutate({ email })}
+            onClick={() => onSubmitEmail({ email })}
             className="mt-4 w-full py-2 text-sm text-blue-400 hover:underline"
-            disabled={generateOtpMutation.isLoading}
+            disabled={loading.generateOtp}
           >
             Resend OTP
           </button>
@@ -173,9 +187,9 @@ function MultiStepSignup() {
           <button
             type="submit"
             className="w-full py-3 bg-white text-black font-bold rounded hover:bg-gray-200"
-            disabled={signUpMutation.isLoading}
+            disabled={loading.signUp}
           >
-            {signUpMutation.isLoading ? "Signing Up..." : "Sign Up"}
+            {loading.signUp ? "Signing Up..." : "Sign Up"}
           </button>
         </form>
       )}

@@ -8,8 +8,8 @@ function EventsAnalysisCard() {
     isLoading: loadingNow,
     error: errorNow,
   } = useQuery({
-    queryKey: ["events", "ongoing"],
-    queryFn: () => getEvent("ongoing"),
+    // queryKey: ["events", "ongoing"],
+    // queryFn: () => getEvent("ongoing"),
   });
 
   const {
@@ -17,8 +17,8 @@ function EventsAnalysisCard() {
     isLoading: loadingUpcoming,
     error: errorUpcoming,
   } = useQuery({
-    queryKey: ["events", "upcoming"],
-    queryFn: () => getEvent("upcoming"),
+    // queryKey: ["events", "upcoming"],
+    // queryFn: () => getEvent("upcoming"),
   });
 
   if (loadingNow || loadingUpcoming) return <div>Loading...</div>;

@@ -1,19 +1,50 @@
-import { useMutation } from "@tanstack/react-query";
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { signIn } from "../../api/auth";
+import { toast } from "react-toastify";
+import { checkRole } from "../../api/manager/role";
 
 function AuthForm({ type }) {
   const navigate = useNavigate();
   const { register, handleSubmit } = useForm();
-  const { mutate, isPending } = useMutation({
-    mutationKey: ["auth"],
-    mutationFn: signIn,
-    onSuccess: (data) => {
-      navigate("/dashboard");
-    }
-  });
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  const onSubmit = async (formData) => {
+    setIsLoading(true);
+
+    await signIn(formData, {
+      onSuccess: async (data) => {
+        toast.success('Login successful!');
+        if (data.role === 'admin') {
+          navigate('/');
+        } else {
+          await checkRole({
+            onSuccess: (data) => {
+              if (data.role === 'manager') {
+                toast.success('Welcome to Maya');
+                navigate('/');
+              }
+            },
+            onError: (error) => {
+              console.error(error);
+            }
+          });
+        }
+      },
+      onError: (error) => {
+        // Directly use the error message from the response
+        if (error.response && error.response.message) {
+          toast.error(error.response.message); // This will show the password requirement message
+        } else {
+          toast.error(error.message || 'Login failed. Please try again.');
+        }
+      }
+    });
+
+    setIsLoading(false);
+  };
 
   let route = "";
   if (type === "login") {
@@ -21,11 +52,11 @@ function AuthForm({ type }) {
   } else {
     route = "/";
   }
+
   return (
     <div
-      className={`bg-[#ffffff11] backdrop-blur-sm p-10 rounded-3xl shadow-lg w-full max-w-md ${
-        type == "signup" ? "absolute right-0 left-0 mx-auto" : "relative"
-      }`}
+      className={`bg-[#ffffff11] backdrop-blur-sm p-10 rounded-3xl shadow-lg w-full max-w-md ${type == "signup" ? "absolute right-0 left-0 mx-auto" : "relative"
+        }`}
     >
       <h2 className="text-2xl text-left font-bold mb-2">
         {type === "login" ? "Login" : "Sign Up"}
@@ -34,7 +65,13 @@ function AuthForm({ type }) {
         Welcome Back. Manage, Organize, and Unlock the Power of Maya.
       </p>
 
-      <form className="mx-10" onSubmit={handleSubmit(mutate)}>
+      {error && (
+        <div className="mb-4 text-red-500 text-sm text-center">
+          {error}
+        </div>
+      )}
+
+      <form className="mx-10" onSubmit={handleSubmit(onSubmit)}>
         {/* Email Field */}
         <div className="mb-4">
           <input
@@ -59,9 +96,9 @@ function AuthForm({ type }) {
         <button
           type="submit"
           className="w-full py-3 bg-white text-black font-bold rounded hover:bg-gray-200"
-          disabled={isPending}
+          disabled={isLoading}
         >
-          {type === "login" ? "Login" : "Sign Up"}
+          {isLoading ? "Processing..." : type === "login" ? "Login" : "Sign Up"}
         </button>
       </form>
 
