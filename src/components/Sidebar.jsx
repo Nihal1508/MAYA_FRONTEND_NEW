@@ -17,7 +17,7 @@ const Sidebar = () => {
   return (
     <>
       {
-        role === 'admin' ?? <div className="w-64 bg-[#0B0B0Bff] p-6 flex flex-col items-start h-screen text-white">
+        role === 'admin' && <div className="w-64 bg-[#0B0B0Bff] p-6 flex flex-col items-start h-screen text-white">
           <h1 className="text-2xl font-bold mb-16">Maya</h1>
           <nav>
             <ul>
