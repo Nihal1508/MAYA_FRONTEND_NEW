@@ -18,6 +18,8 @@ function AuthForm({ type }) {
       onSuccess: async (data) => {
         toast.success('Login successful!');
         if (data.role === 'admin') {
+          localStorage.setItem("role", data.role)
+          toast.success(data.role);
           navigate('/');
         } else {
           await checkRole({

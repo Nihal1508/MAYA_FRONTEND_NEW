@@ -18,16 +18,16 @@ import AdminRoute from "./components/AdminRoute";
 import ManagerDashboard from "./pages/manager/ManagerDashboard";
 
 function App() {
-  console.log(new Date().toISOString());
+
   return (
     <Routes>
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<Signup />} />
       <Route path="/waiting" element={<WaitingAdminResponse />} />
       <Route element={<PrivateRoute />}>
-        <Route path="/storage" element={<Storage />} />
+
         <Route path="/managerdashboard" element={<ManagerDashboard />} />
-        <Route path="/events" element={<Events />} />
+
         <Route path="/event/:id" element={<EventDetails />} />
         <Route path="/storageplus" element={<Storageplus />} />
         <Route path="/manageevent" element={<ManageEvent />} />
@@ -36,6 +36,8 @@ function App() {
           <Route path="/" element={<Dashboard />} />
           <Route path="/addevent" element={<Addevent />} />
           <Route path="/manageadmins" element={<Manageadmins />} />
+          <Route path="/storage" element={<Storage />} />
+          <Route path="/events" element={<Events />} />
         </Route>
       </Route>
     </Routes>
