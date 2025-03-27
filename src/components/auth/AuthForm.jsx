@@ -24,7 +24,7 @@ function AuthForm({ type }) {
             onSuccess: (data) => {
               if (data.role === 'manager') {
                 toast.success('Welcome to Maya');
-                navigate('/');
+                navigate('/managerdashboard');
               }
             },
             onError: (error) => {

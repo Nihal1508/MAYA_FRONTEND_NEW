@@ -5,7 +5,7 @@ function EventTile({ event, onClick }) {
       key={event.id}
       className="relative group cursor-pointer bg-gray-700 bg-cover bg-center rounded-2xl w-56 h-56 transition-all duration-300 ease-in-out hover:w-96"
       style={{
-        backgroundImage: `url(${event.imageSrc})`,
+        backgroundImage: `url(${event.file.url})`,
         borderRadius: "1rem",
       }}
       onClick={() => onClick(event)}
@@ -20,7 +20,7 @@ function EventTile({ event, onClick }) {
       >
         <div className="flex flex-col gap-1 items-start justify-center w-fit h-fit">
           <p className="text-2xl text-left font-bold">{event.eventname}</p>
-          <p className="text-base font-semibold">{event.description}</p>
+          <p className="text-base text-left font-semibold">{event.description}</p>
           <p className="text-sm">
             {new Date(event.startDate).toLocaleDateString("en-GB", {
               day: "numeric",

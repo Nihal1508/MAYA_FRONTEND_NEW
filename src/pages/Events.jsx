@@ -7,14 +7,7 @@ import { getEvent } from "../api/events1";
 
 const Events = () => {
   const navigate = useNavigate();
-  const {
-    data: events,
-    isLoading,
-    isError,
-  } = useQuery({
-    queryKey: ["events"],
-    queryFn: () => getEvent(),
-  });
+  const [events, setEvents] = React.useState([]);
 
   if (isLoading) {
     return (

@@ -1,3 +1,5 @@
+import { get } from "react-hook-form";
+
 export const maya = {
     //auth
     login: '/auth/login',
@@ -10,6 +12,8 @@ export const maya = {
     getEvent: '/admin/events',
     getEventImage: '/api/events/upload',
     ManagerInvite: '/admin/events/invite',
+    getAssignedEvents: '/api/events',
+    getEventInvitations: '/api/events/invites',
     //image
     takeImage: '/api/events/images',
     deleteImage: '/api/events/images',
@@ -20,5 +24,9 @@ export const maya = {
     rejectRequest: '/api/users/reject',
     //admins
     requests: '/admin/users',
+
+    //manager
+    accepEventInvitation: '/api/events/invites/accept',
+    rejectEventInvitation: '/api/events/invites/reject',
 
 }
