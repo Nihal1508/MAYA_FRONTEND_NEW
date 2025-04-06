@@ -64,17 +64,17 @@ const Topbar = ({ title }) => {
       </div>
       <div className="flex items-center gap-8">
         {/* Search Button */}
-        <button className="focus:outline-none">
+        <button className="focus:outline-none hidden">
           <FiSearch size={25} />
         </button>
 
         {/* Admins Button (Toggles Admin Popup) */}
-        <button onClick={handleAdminsClick} className="focus:outline-none">
+        <button onClick={handleAdminsClick} className="focus:outline-none hidden">
           <FiUserPlus size={25} />
         </button>
 
         {/* Notifications Button (Toggles Notification Popup) */}
-        <button onClick={handleNotificationsClick} className="focus:outline-none relative">
+        <button onClick={handleNotificationsClick} className="focus:outline-none relative hidden">
           <FiBell size={25} />
           <span className="absolute -top-1 -right-1 bg-red-500 text-white font-semibold text-xs rounded-full w-4 h-4 flex items-center justify-center">
             3
@@ -83,7 +83,7 @@ const Topbar = ({ title }) => {
 
         {/* Profile Button */}
         <button className="focus:outline-none">
-          <img src={profileIcon} alt="Profile" className="w-10 h-10 rounded-halfs hover:opacity-75" />
+          <img src={profileIcon} alt="Profile" className="w-10 h-10 rounded-halfs hover:opacity-75 hidden" />
         </button>
       </div>
 

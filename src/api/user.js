@@ -33,7 +33,7 @@ export const acceptRequest = async (eventId, { onSuccess, onError } = {}) => {
             throw enhancedError;
         }
     }
-};
+}; 
 
 export const rejectRequest = async (userid, { onSuccess, onError } = {}) => {
     try {

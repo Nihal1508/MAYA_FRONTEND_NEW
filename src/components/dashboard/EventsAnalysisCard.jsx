@@ -8,8 +8,8 @@ function EventsAnalysisCard() {
     isLoading: loadingNow,
     error: errorNow,
   } = useQuery({
-    // queryKey: ["events", "ongoing"],
-    // queryFn: () => getEvent("ongoing"),
+     queryKey: ["events", "ongoing"],
+     queryFn: () => getEvent("ongoing"),
   });
 
   const {
@@ -17,16 +17,16 @@ function EventsAnalysisCard() {
     isLoading: loadingUpcoming,
     error: errorUpcoming,
   } = useQuery({
-    // queryKey: ["events", "upcoming"],
-    // queryFn: () => getEvent("upcoming"),
+     queryKey: ["events", "upcoming"],
+     queryFn: () => getEvent("upcoming"),
   });
 
   if (loadingNow || loadingUpcoming) return <div>Loading...</div>;
   if (errorNow || errorUpcoming) return <div>Error loading events.</div>;
 
   return (
-    <div className="bg-[#0B0B0B] w-full rounded-2xl h-full">
-      <div className="p-10 h-full flex flex-col items-start gap-3">
+    <div className="bg-[#0B0B0B] w-[100%]  rounded-2xl  ">
+      <div className="p-12 h-full flex flex-col items-start gap-5">
         <h2 className="text-lg font-semibold">Events</h2>
         <div className="h-full overflow-y-scroll scrollbar-custom">
           <div className="h-fit">
@@ -34,8 +34,8 @@ function EventsAnalysisCard() {
               Now happening
             </h5>
             <div className="gap-3 flex flex-col mb-8">
-              {nowEvents &&
-                nowEvents.map((event) => (
+              {nowEvents?.events &&
+                nowEvents.events.map((event) => (
                   <EventListItem key={event.eventid} event={event} type="now" />
                 ))}
             </div>
@@ -43,8 +43,8 @@ function EventsAnalysisCard() {
               Upcoming events
             </h5>
             <div className="gap-3 flex flex-col">
-              {upcomingEvents &&
-                upcomingEvents.map((event) => (
+              {upcomingEvents?.events &&
+                upcomingEvents.events.map((event) => (
                   <EventListItem key={event.eventid} event={event} />
                 ))}
             </div>

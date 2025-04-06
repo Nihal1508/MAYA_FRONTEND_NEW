@@ -1,6 +1,7 @@
 import React from "react";
 
 const EventCoverImage = ({ cover }) => {
+  console.log('conver:: +'+cover)
   return (
     <div className="mb-4">
       <p className="text-gray-400 mb-1">Cover Image</p>

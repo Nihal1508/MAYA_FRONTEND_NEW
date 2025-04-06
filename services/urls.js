@@ -8,8 +8,8 @@ export const maya = {
     signup: '/auth/signup',
     refresh: '/tokens/refresh',
     //events
-    createEvent: '/api/events',
-    getEvent: '/admin/events',
+    createEvent: '/api/events/create',
+    getEvent: '/events',
     getEventImage: '/api/events/upload',
     ManagerInvite: '/admin/events/invite',
     getAssignedEvents: '/api/events',
@@ -17,7 +17,8 @@ export const maya = {
     //image
     takeImage: '/api/events/images',
     deleteImage: '/api/events/images',
-    uploadImage: '/api/events/upload',
+    uploadImage: '/events/upload',
+    storagespace:'/admin/files',
     //users
     checkRole: '/api/role',
     acceptRequest: '/api/users/accept',
@@ -25,7 +26,6 @@ export const maya = {
     //admins
     requests: '/admin/users',
     //invites
-    invite:'/admin/events/invite',
 
     //manager
     accepEventInvitation: '/api/events/invites/accept',

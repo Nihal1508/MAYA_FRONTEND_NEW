@@ -267,13 +267,13 @@ const ActiveAdmins = ({ refreshTrigger }) => {
               <p className="font-medium text-white">{admin.email}</p>
               <p className="text-gray-400 text-sm">Active</p>
             </div>
-            {/* <button
+            <button
               onClick={() => handleRemove(admin.userid)}
               className="text-gray-400 hover:text-white"
               title="Remove Admin"
             >
               <IoIosRemoveCircleOutline size={28} />
-            </button> */}
+            </button>
           </div>
         ))
       ) : (
@@ -300,7 +300,7 @@ const ManageAdmins = () => {
       <Topbar title="Manage Admins" />
       <div className="h-full w-full pb-10">
         <div className="h-full overflow-y-scroll scrollbar-custom pr-6">
-          {/* <InviteAdminCard onInviteSuccess={handleInviteSuccess} /> */}
+          <InviteAdminCard onInviteSuccess={handleInviteSuccess} />
           <AdminRequests onRequestAction={handleRequestAction} />
           <ActiveAdmins refreshTrigger={refreshTrigger} />
         </div>

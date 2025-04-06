@@ -13,7 +13,7 @@ export const publicGateway = axios.create({
 publicGateway.interceptors.request.use(
   (config) => {
     console.log('Request sent:', config.url);
-    const accessToken = localStorage.getItem('accessToken');
+    const accessToken = localStorage.getItem('access_token');
     if (accessToken) {
       config.headers['Authorization'] = `Bearer ${accessToken}`;
     }
@@ -44,7 +44,7 @@ export const privateGateway = axios.create({
 
 privateGateway.interceptors.request.use(
   function (config) {
-    const accessToken = localStorage.getItem('accessToken');
+    const accessToken = localStorage.getItem('access_token');
     if (accessToken) {
       config.headers['Authorization'] = `Bearer ${accessToken}`;
     }
